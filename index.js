@@ -25,10 +25,11 @@ bot.onText(/\/reset/, async (msg, match) => {
 });
 
 bot.onText(/.+/, async (msg, match) => {
+  const privateChat = msg.chat.type === 'private';
   const mentioned = /Chatonildo/gi.test(msg.text);
   const replied = msg?.reply_to_message?.from?.id === 8328423358;
 
-  if (mentioned === false && replied === false) {
+  if (privateChat === false && mentioned === false && replied === false) {
     return;
   }
 
