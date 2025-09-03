@@ -16,7 +16,7 @@ Simply clone the repository, run `npm install` and `node index.js`
 
 ## Using
 
-Start a private conversation with the bot or add it to a group, then send the `/start` command
+Start a private conversation with the bot or add it to a group
 
 In private, the bot will answer any message
 
@@ -29,6 +29,8 @@ Its memory is isolated by chat id, per user/group
 Type `/reset` to clear its memory per user/group
 
 Also it will lose memory if the process restart (well, its memory is in-memory only)
+
+At the first message, it will present itself
 
 ## Keywords
 
