@@ -54,6 +54,10 @@ bot.onText(/.+/, async (msg, match) => {
     return;
   }
 
+  if (firstMessage(msg.chat.id) === true) {
+    await bot.sendMessage(msg.chat.id, 'Tô sem memória!');
+  }
+
   const messageId = privateChat === true ? null : msg.message_id;
 
   await processBotMessage(msg.text, messageId, msg.chat.id);
