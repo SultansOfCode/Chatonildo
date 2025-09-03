@@ -28,7 +28,7 @@ const processBotMessage = async (message, messageId, chatId) => {
   );
 };
 
-bot.onText(/\/reset/, async (msg, match) => {
+bot.onText(/^\/reset$/, async (msg, match) => {
   // Only process after /start message
   if (firstMessage(msg.chat.id) === true) {
     return;
@@ -40,16 +40,18 @@ bot.onText(/\/reset/, async (msg, match) => {
 });
 
 bot.onText(/.+/, async (msg, match) => {
+  const isCommand = /^\//.test(msg.text);
+
+  if (isCommand === true) {
+    return;
+  }
+
   const privateChat = msg.chat.type === 'private';
   const mentioned = botNameRegEx.test(msg.text);
   const replied = msg?.reply_to_message?.from?.id === botId;
 
   if (privateChat === false && mentioned === false && replied === false) {
     return;
-  }
-
-  if (firstMessage(msg.chat.id) === true) {
-    await processBotMessage('Olá! Apresente-se', null, msg.chat.id);
   }
 
   const messageId = privateChat === true ? null : msg.message_id;

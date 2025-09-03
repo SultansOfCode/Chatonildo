@@ -30,8 +30,6 @@ Type `/reset` to clear its memory per user/group
 
 Also it will lose memory if the process restart (well, its memory is in-memory only)
 
-At the first message, it will present itself
-
 ## Keywords
 
-Gemini - AI - Artificial - Intelligence - Telegram - Bot - Chat - Generative - LangChain - Node.js - JavaScript - JS
+Gemini - Flash - AI - Artificial - Intelligence - Telegram - Bot - Chat - Generative - LangChain - Node.js - JavaScript - JS
