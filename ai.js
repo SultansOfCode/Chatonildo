@@ -10,12 +10,8 @@ export const BOT_NAME =
     ? process.env.TELEGRAM_BOT_NAME
     : 'Chatonildo';
 
-const systemMessage = readFileSync('system.txt')
-  .toString()
-  .replace(
-    /BOT_NAME/g,
-    BOT_NAME
-  );
+const systemMessageGroup = readFileSync('system_group.txt').toString();
+const systemMessagePrivate = readFileSync('system_private.txt').toString();
 
 const chatIds = [];
 
@@ -53,7 +49,9 @@ export const firstMessage = chatId => {
   return chatIds.includes(chatId) === false;
 };
 
-export const askBot = async (message, chatId) => {
+export const askBot = async msg => {
+  const chatId = msg.chat.id;
+
   const config = {
     configurable: {
       thread_id: chatId
@@ -63,17 +61,21 @@ export const askBot = async (message, chatId) => {
   const messages = [];
 
   if (firstMessage(chatId) === true) {
-    chatIds.push(chatId);
+    const systemMessage = setupBot(msg);
 
-    messages.push({
-      role: 'system',
-      content: systemMessage,
-    });
+    if (systemMessage !== null) {
+      messages.push(
+        {
+          role: 'system',
+          content: systemMessage
+        }
+      )
+    }
   }
 
   const input = {
     role: 'user',
-    content: message,
+    content: msg.text
   };
 
   messages.push(input);
@@ -99,3 +101,25 @@ export const resetChat = async chatId => {
 
   chatIds.splice(index, 1);
 }
+
+export const setupBot = msg => {
+  const chatId = msg.chat.id;
+
+  if (firstMessage(chatId) === false) {
+    return null;
+  }
+
+  chatIds.push(chatId);
+
+  const privateChat = msg.chat.type === 'private';
+  const groupName = privateChat === false ? msg.chat.title : '';
+  const userName = privateChat === true ? msg.chat.first_name : '';
+
+  const systemMessage =
+    (privateChat === true ? systemMessagePrivate : systemMessageGroup)
+      .replace(/BOT_NAME/g, BOT_NAME)
+      .replace(/GROUP_NAME/g, groupName)
+      .replace(/USER_NAME/g, userName);
+
+  return systemMessage;
+};

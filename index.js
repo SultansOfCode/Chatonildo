@@ -1,6 +1,6 @@
 import { configDotenv } from 'dotenv';
 import TelegramBot from 'node-telegram-bot-api';
-import { BOT_NAME, askBot, firstMessage, resetChat } from './ai.js';
+import { BOT_NAME, askBot, firstMessage, resetChat, setupBot } from './ai.js';
 
 configDotenv();
 
@@ -16,8 +16,12 @@ const botId = (await bot.getMe()).id;
 
 const botNameRegEx = new RegExp(BOT_NAME, 'gi');
 
-const processBotMessage = async (message, messageId, chatId) => {
-  const answer = await askBot(message, chatId);
+const processBotMessage = async msg => {
+  const chatId = msg.chat.id;
+  const privateChat = msg.chat.type === 'private';
+  const messageId = privateChat === true ? null : msg.message_id;
+
+  const answer = await askBot(msg);
 
   await bot.sendMessage(
     chatId,
@@ -58,7 +62,5 @@ bot.onText(/.+/, async (msg, match) => {
     await bot.sendMessage(msg.chat.id, 'Tô sem memória!');
   }
 
-  const messageId = privateChat === true ? null : msg.message_id;
-
-  await processBotMessage(msg.text, messageId, msg.chat.id);
+  await processBotMessage(msg);
 });

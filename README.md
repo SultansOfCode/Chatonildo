@@ -8,7 +8,9 @@ The `TELEGRAM_BOT_NAME` is optional and defaults to `Chatonildo`
 
 The bot needs to be able to read all messages, not only `/commands`
 
-The system message to setup the bot resides inside `system.txt`
+The system message to setup the bot for groups resides inside `system_group.txt`
+
+The system message to setup the bot for private chats resides inside `system_private.txt`
 
 ## Running
 
